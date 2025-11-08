@@ -1,6 +1,25 @@
 {% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Home - Django Quiz{% endblock %}
+
 {% block content %}
-  <h2>Welcome to the Django Quiz Application!</h2>
-  <p>Test your knowledge with our exciting quizzes.</p>
-  
+
+<div class="hero-section">
+  <h1>🎯 Welcome to the Django Quiz App!</h1>
+  <p>Challenge yourself, test your knowledge, and track your scores!</p>
+  <a href="{% url 'quiz:home' %}" class="btn-start">Start Quiz Now</a>
+</div>
+
+<div class="available-quizzes">
+  <div class="quiz-card">
+    <div class="card">
+    
+    <h3></h3>
+    <p>Learn and test history facts!</p>
+    <a href="#" class="btn-card">Try Now</a>
+    </div>
+  </div>
+</div
+
 {% endblock %}
