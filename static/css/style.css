@@ -32,3 +32,71 @@
     background-color: #ffc107;
 }
 
+/* Quiz Selection Section */
+.quiz-selection-container {
+    text-align: center;
+    padding: 20px;
+}
+
+.quiz-selection-container h1 {
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.quiz-selection-container p {
+    color: #666;
+    margin-bottom: 30px;
+}
+
+/* Quiz Thumbnails */
+.quiz-thumbnails {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 30px;
+    margin-top: 20px;
+}
+
+.quiz-thumbnail {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    padding: 30px 20px;
+    width: 220px;
+    text-align: center;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.quiz-thumbnail:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.quiz-icon {
+    font-size: 3em;
+    margin-bottom: 15px;
+}
+
+.quiz-thumbnail h3 {
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.quiz-thumbnail p {
+    color: #666;
+    margin-bottom: 20px;
+}
+
+.btn-quiz-select {
+    padding: 10px 20px;
+    background-color: #2575fc;
+    color: white;
+    text-decoration: none;
+    border-radius: 6px;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+.btn-quiz-select:hover {
+    background-color: #6a11cb;
+}
