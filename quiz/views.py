@@ -1,6 +1,5 @@
-from django.shortcuts import render
-from .models import Question
-from django.db.models import Count
+from django.shortcuts import render, get_object_or_404
+from .models import Quiz, Question
 
 # Create your views here.
 def home(request):
@@ -8,17 +7,30 @@ def home(request):
 
 
 def start_quiz(request):
-    # Group questions by quiz type and count them
-    quiz_types = Question.QUIZ_TYPES
+    # Get all quizzes
+    quizzes = Quiz.objects.all()
     quiz_data = []
     
-    for quiz_type, quiz_name in quiz_types:
-        count = Question.objects.filter(quiz_type=quiz_type).count()
-        if count > 0:  # Only show quiz types that have questions
+    for quiz in quizzes:
+        count = quiz.questions.count()
+        if count > 0:  # Only show quizzes that have questions
             quiz_data.append({
-                'type': quiz_type,
-                'name': quiz_name,
+                'id': quiz.id,
+                'name': quiz.name,
+                'description': quiz.description,
+                'quiz_type': quiz.quiz_type,
+                'slug': quiz.slug,
                 'count': count
             })
     
     return render(request, 'quiz/start-quiz.html', {'quiz_data': quiz_data})
+
+
+def quiz_detail(request, quiz_slug):
+    quiz = get_object_or_404(Quiz, slug=quiz_slug)
+    questions = quiz.questions.all()
+    
+    return render(request, 'quiz/quiz-detail.html', {
+        'quiz': quiz,
+        'questions': questions
+    })

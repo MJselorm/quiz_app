@@ -12,17 +12,18 @@
     {% for quiz in quiz_data %}
     <div class="quiz-thumbnail">
       <div class="quiz-icon">
-        {% if quiz.type == 'MATH' %}
+        {% if quiz.quiz_type == 'MATH' %}
         ➕
-        {% elif quiz.type == 'SCI' %}
+        {% elif quiz.quiz_type == 'SCI' %}
         🔬
-        {% elif quiz.type == 'HIST' %}
+        {% elif quiz.quiz_type == 'HIST' %}
         🏛️
         {% endif %}
       </div>
       <h3>{{ quiz.name }}</h3>
+      <p>{{ quiz.description }}</p>
       <p>{{ quiz.count }} questions available</p>
-      <a href="#" class="btn-quiz-select">Start {{ quiz.name }} Quiz</a>
+      <a href="{% url 'quiz:quiz-detail' quiz.slug %}" class="btn-quiz-select">Start {{ quiz.name }}</a>
     </div>
     {% empty %}
     <p>No quizzes available at the moment. Please check back later!</p>

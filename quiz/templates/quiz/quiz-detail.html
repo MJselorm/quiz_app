@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ quiz.name }} - Django Quiz{% endblock %}
+
+{% block content %}
+<div class="quiz-detail-container">
+  <h1>{{ quiz.name }}</h1>
+  <p>{{ quiz.description }}</p>
+  
+  <div class="quiz-info">
+    <span class="quiz-type">{{ quiz.get_quiz_type_display }}</span>
+    <span class="question-count">{{ questions|length }} questions</span>
+  </div>
+  
+  <div class="questions-container">
+    {% for question in questions %}
+    <div class="question-card">
+      <h3>Question {{ forloop.counter }}:</h3>
+      <p>{{ question.question_text }}</p>
+      <div class="options">
+        <div class="option">A. {{ question.option_a }}</div>
+        <div class="option">B. {{ question.option_b }}</div>
+        <div class="option">C. {{ question.option_c }}</div>
+        <div class="option">D. {{ question.option_d }}</div>
+      </div>
+      <div class="correct-answer">
+        Correct Answer: {{ question.get_correct_option_display }}
+      </div>
+    </div>
+    {% empty %}
+    <p>No questions available for this quiz.</p>
+    {% endfor %}
+  </div>
+  
+  <a href="{% url 'quiz:start-quiz' %}" class="btn-back">← Back to Quiz Selection</a>
+</div>
+{% endblock %}
