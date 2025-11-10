@@ -23,7 +23,7 @@
       <h3>{{ quiz.name }}</h3>
       <p>{{ quiz.description }}</p>
       <p>{{ quiz.count }} questions available</p>
-      <a href="{% url 'quiz:quiz-detail' quiz.slug %}" class="btn-quiz-select">Start {{ quiz.name }}</a>
+      <a href="{% url 'quiz:quiz-detail' quiz.slug %}" class="btn-quiz-select">Start {{ quiz.name }} Quiz</a>
     </div>
     {% empty %}
     <p>No quizzes available at the moment. Please check back later!</p>

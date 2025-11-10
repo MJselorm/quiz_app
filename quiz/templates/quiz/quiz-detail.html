@@ -5,34 +5,105 @@
 
 {% block content %}
 <div class="quiz-detail-container">
-  <h1>{{ quiz.name }}</h1>
-  <p>{{ quiz.description }}</p>
-  
-  <div class="quiz-info">
-    <span class="quiz-type">{{ quiz.get_quiz_type_display }}</span>
-    <span class="question-count">{{ questions|length }} questions</span>
-  </div>
-  
-  <div class="questions-container">
-    {% for question in questions %}
-    <div class="question-card">
-      <h3>Question {{ forloop.counter }}:</h3>
-      <p>{{ question.question_text }}</p>
-      <div class="options">
-        <div class="option">A. {{ question.option_a }}</div>
-        <div class="option">B. {{ question.option_b }}</div>
-        <div class="option">C. {{ question.option_c }}</div>
-        <div class="option">D. {{ question.option_d }}</div>
-      </div>
-      <div class="correct-answer">
-        Correct Answer: {{ question.get_correct_option_display }}
+  {% if show_results %}
+  <!-- Results View -->
+  <div id="results-container" class="results-container">
+    <h2>Quiz Results</h2>
+    <div class="score-summary">
+      <h3>Your Score: <span id="score">{{ score }}</span>/<span id="total">{{ total }}</span> ({{ percentage }}%)</h3>
+      <div class="remark {{ remark_class }}">{{ remark }}</div>
+      <div class="score-bar">
+        <div class="score-fill" id="score-fill"></div>
       </div>
     </div>
-    {% empty %}
-    <p>No questions available for this quiz.</p>
-    {% endfor %}
+    
+    <div class="results-details">
+      {% for result in results %}
+      <div class="result-card {% if result.is_correct %}correct{% else %}incorrect{% endif %}">
+        <h4>Question: {{ result.question_text }}</h4>
+        <p>Your answer: 
+          {% if result.user_answer == 'A' %}A
+          {% elif result.user_answer == 'B' %}B
+          {% elif result.user_answer == 'C' %}C
+          {% elif result.user_answer == 'D' %}D
+          {% else %}No answer selected
+          {% endif %}
+        </p>
+        <p>Correct answer: {{ result.correct_answer }}</p>
+        <p class="feedback">
+          {% if result.is_correct %}
+          <span class="correct-text">✓ Correct!</span>
+          {% else %}
+          <span class="incorrect-text">✗ Incorrect</span>
+          {% endif %}
+        </p>
+      </div>
+      {% endfor %}
+    </div>
+    
+    <a href="{% url 'quiz:start-quiz' %}" class="btn-back">← Back to Quiz Selection</a>
   </div>
-  
-  <a href="{% url 'quiz:start-quiz' %}" class="btn-back">← Back to Quiz Selection</a>
+  {% else %}
+  <!-- Quiz Taking View -->
+  <div id="quiz-container">
+    <h1>{{ quiz.name }}</h1>
+    <p>{{ quiz.description }}</p>
+    
+    <div class="quiz-info">
+      <span class="quiz-type">{{ quiz.get_quiz_type_display }}</span>
+      <span class="question-count">{{ questions|length }} questions</span>
+    </div>
+    
+    <form id="quiz-form" method="post">
+      {% csrf_token %}
+      <div class="questions-container" id="questions-container">
+        {% for question in questions %}
+        <div class="question-card">
+          <h3>Question {{ forloop.counter }}:</h3>
+          <p>{{ question.question_text }}</p>
+          <div class="options">
+            <div class="option">
+              <input type="radio" id="q{{ question.id }}_a" name="question_{{ question.id }}" value="A">
+              <label for="q{{ question.id }}_a">{{ question.option_a }}</label>
+            </div>
+            <div class="option">
+              <input type="radio" id="q{{ question.id }}_b" name="question_{{ question.id }}" value="B">
+              <label for="q{{ question.id }}_b">{{ question.option_b }}</label>
+            </div>
+            <div class="option">
+              <input type="radio" id="q{{ question.id }}_c" name="question_{{ question.id }}" value="C">
+              <label for="q{{ question.id }}_c">{{ question.option_c }}</label>
+            </div>
+            <div class="option">
+              <input type="radio" id="q{{ question.id }}_d" name="question_{{ question.id }}" value="D">
+              <label for="q{{ question.id }}_d">{{ question.option_d }}</label>
+            </div>
+          </div>
+        </div>
+        {% empty %}
+        <p>No questions available for this quiz.</p>
+        {% endfor %}
+      </div>
+      
+      <button type="submit" class="btn-submit-quiz">Submit Quiz</button>
+    </form>
+  </div>
+  {% endif %}
 </div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Update the score bar width based on the actual score
+    const scoreElement = document.getElementById('score');
+    const totalElement = document.getElementById('total');
+    const scoreFill = document.getElementById('score-fill');
+    
+    if (scoreElement && totalElement && scoreFill) {
+      const score = parseInt(scoreElement.textContent);
+      const total = parseInt(totalElement.textContent);
+      const percentage = total > 0 ? (score / total) * 100 : 0;
+      scoreFill.style.width = `${percentage}%`;
+    }
+  });
+</script>
 {% endblock %}

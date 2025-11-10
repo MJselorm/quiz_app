@@ -6,6 +6,7 @@ class Quiz(models.Model):
         ('MATH', 'Math'),
         ('SCI', 'Science'),
         ('HIST', 'History'),
+        ('TECH', 'Technology'),
     ]
     
     name = models.CharField(max_length=100)

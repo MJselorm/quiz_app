@@ -6,8 +6,32 @@
 {% block content %}
 
 <div class="hero-section">
-  <h1>🎯 Welcome to the Django Quiz App!</h1>
-  <p>Challenge yourself, test your knowledge, and track your scores!</p>
+  <h1>🎯 Welcome to QuizMaster!</h1>
+  <p>Challenge yourself with our interactive quizzes across multiple subjects. Test your knowledge, track your progress, and have fun while learning!</p>
   <a href="{% url 'quiz:start-quiz' %}" class="btn-start">Start Quiz Now</a>
 </div>
+
+<div class="features-section">
+  <div class="container">
+    <h2>Why Choose QuizMaster?</h2>
+    <div class="features">
+      <div class="feature-card">
+        <div class="feature-icon">📚</div>
+        <h3>Diverse Subjects</h3>
+        <p>Choose from Math, Science, History, and more subjects to test your knowledge.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">⚡</div>
+        <h3>Instant Feedback</h3>
+        <p>Get immediate results and explanations for each question.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🏆</div>
+        <h3>Track Progress</h3>
+        <p>Monitor your improvement over time with our analytics.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
 {% endblock %}

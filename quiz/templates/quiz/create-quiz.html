@@ -1,0 +1,170 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Create Quiz - Django Quiz{% endblock %}
+
+{% block content %}
+<div class="create-quiz-container">
+  <h1>📝 Create Your Own Quiz</h1>
+  <p>Design your custom quiz by adding questions and answers. Perfect for teachers, trainers, or anyone who wants to share knowledge!</p>
+  
+  <div class="create-quiz-form">
+    <form id="quizForm">
+      <div class="form-section">
+        <h2>Quiz Information</h2>
+        <div class="form-group">
+          <label for="quizName">Quiz Name:</label>
+          <input type="text" id="quizName" name="quizName" required placeholder="e.g., Python Basics Quiz">
+        </div>
+        
+        <div class="form-group">
+          <label for="quizDescription">Description:</label>
+          <textarea id="quizDescription" name="quizDescription" rows="3" placeholder="Describe your quiz..."></textarea>
+        </div>
+        
+        <div class="form-group">
+          <label for="quizCategory">Category:</label>
+          <select id="quizCategory" name="quizCategory">
+            <option value="MATH">Mathematics</option>
+            <option value="SCI">Science</option>
+            <option value="HIST">History</option>
+            <option value="TECH">Technology</option>
+            <option value="LANG">Languages</option>
+            <option value="GEN">General Knowledge</option>
+          </select>
+        </div>
+      </div>
+      
+      <div class="form-section">
+        <h2>Questions <button type="button" id="addQuestion" class="btn-add">+ Add Question</button></h2>
+        <div id="questionsContainer">
+          <!-- Question template will be added here dynamically -->
+        </div>
+      </div>
+      
+      <div class="form-actions">
+        <button type="submit" class="btn-submit">Create Quiz</button>
+        <button type="reset" class="btn-reset">Reset Form</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const questionsContainer = document.getElementById('questionsContainer');
+    const addQuestionBtn = document.getElementById('addQuestion');
+    
+    // Add initial question
+    addQuestion();
+    
+    // Add question button event
+    addQuestionBtn.addEventListener('click', addQuestion);
+    
+    // Function to add a new question
+    function addQuestion() {
+      const questionCount = document.querySelectorAll('.question-card').length + 1;
+      const questionHtml = `
+        <div class="question-card">
+          <div class="question-header">
+            <h3>Question ${questionCount} <button type="button" class="btn-remove">✕</button></h3>
+          </div>
+          <div class="form-group">
+            <label for="question${questionCount}">Question Text:</label>
+            <input type="text" id="question${questionCount}" name="question${questionCount}" required>
+          </div>
+          
+          <div class="options-grid">
+            <div class="form-group">
+              <label for="optionA${questionCount}">Option A:</label>
+              <input type="text" id="optionA${questionCount}" name="optionA${questionCount}" required>
+            </div>
+            
+            <div class="form-group">
+              <label for="optionB${questionCount}">Option B:</label>
+              <input type="text" id="optionB${questionCount}" name="optionB${questionCount}" required>
+            </div>
+            
+            <div class="form-group">
+              <label for="optionC${questionCount}">Option C:</label>
+              <input type="text" id="optionC${questionCount}" name="optionC${questionCount}" required>
+            </div>
+            
+            <div class="form-group">
+              <label for="optionD${questionCount}">Option D:</label>
+              <input type="text" id="optionD${questionCount}" name="optionD${questionCount}" required>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label for="correctOption${questionCount}">Correct Answer:</label>
+            <select id="correctOption${questionCount}" name="correctOption${questionCount}">
+              <option value="A">A</option>
+              <option value="B">B</option>
+              <option value="C">C</option>
+              <option value="D">D</option>
+            </select>
+          </div>
+        </div>
+      `;
+      
+      questionsContainer.insertAdjacentHTML('beforeend', questionHtml);
+      
+      // Add event listener to the remove button of the newly added question
+      const newQuestionCard = questionsContainer.lastElementChild;
+      const removeBtn = newQuestionCard.querySelector('.btn-remove');
+      removeBtn.addEventListener('click', function() {
+        if (document.querySelectorAll('.question-card').length > 1) {
+          newQuestionCard.remove();
+          // Re-number questions
+          renumberQuestions();
+        }
+      });
+    }
+    
+    // Function to re-number questions
+    function renumberQuestions() {
+      const questionCards = document.querySelectorAll('.question-card');
+      questionCards.forEach((card, index) => {
+        const header = card.querySelector('h3');
+        header.textContent = `Question ${index + 1} `;
+        
+        const removeBtn = document.createElement('button');
+        removeBtn.type = 'button';
+        removeBtn.className = 'btn-remove';
+        removeBtn.textContent = '✕';
+        removeBtn.addEventListener('click', function() {
+          if (document.querySelectorAll('.question-card').length > 1) {
+            card.remove();
+            renumberQuestions();
+          }
+        });
+        
+        header.appendChild(removeBtn);
+        
+        // Update input IDs and names
+        const inputs = card.querySelectorAll('input, select, label');
+        inputs.forEach(input => {
+          if (input.id) {
+            input.id = input.id.replace(/\d+/, index + 1);
+          }
+          if (input.name) {
+            input.name = input.name.replace(/\d+/, index + 1);
+          }
+          if (input.htmlFor) {
+            input.htmlFor = input.htmlFor.replace(/\d+/, index + 1);
+          }
+        });
+      });
+    }
+    
+    // Form submission
+    const quizForm = document.getElementById('quizForm');
+    quizForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      alert('Quiz creation functionality would be implemented in a full Django application. In this demo, your quiz data would be sent to the server for processing.');
+      // In a real application, you would send the form data to the server here
+    });
+  });
+</script>
+{% endblock %}

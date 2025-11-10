@@ -7,27 +7,42 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     
-    <title>QUIZ_GAME</title>
+    <title>{% block title %}Django Quiz App{% endblock %}</title>
 </head>
 <body>
-     <header>
-    <h1>🎯 Django Quiz Application</h1>
-    <nav>
-      <a href="/">Home</a> |
-    </nav>
-  </header>
-  <main>
-    {% block content %}
-    <!-- each app page will insert its content here -->
-    {% endblock %}
-  </main>
+    <header>
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="nav-logo">
+                    <a href="{% url 'quiz:home' %}">🎯 QuizMaster</a>
+                </div>
+                <ul class="nav-menu">
+                    <li class="nav-item">
+                        <a href="{% url 'quiz:home' %}" class="nav-link">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{% url 'quiz:start-quiz' %}" class="nav-link">Quizzes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{% url 'quiz:create-quiz' %}" class="nav-link">Create Quiz</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/admin/" class="nav-link">Admin</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+    
+    <main>
+        {% block content %}
+        <!-- each app page will insert its content here -->
+        {% endblock %}
+    </main>
 
-  <footer>
-    <hr>
-    <p>&copy; 2025 Richie Quiz App</p>
-  </footer>
-
-</body>
-</html>
+    <footer>
+        <hr>
+        <p>&copy; 2025 Richie Quiz App</p>
+    </footer>
 </body>
 </html>
